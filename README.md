@@ -1,1 +1,1 @@
-# machine-learning-thesis-study
+# Deep-learning-thesis-study
