@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Diffusion forward and reverse pipeline</title>
+  <desc id="desc">A visual pipeline showing data distribution q(x0), forward noising to N(0,I), and learned reverse sampling to p theta of x0.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+    </marker>
+    <marker id="blueArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/>
+    </marker>
+    <style>
+      .title{font:600 30px Arial, sans-serif; fill:#111827}
+      .h{font:600 21px Arial, sans-serif; fill:#111827}
+      .t{font:400 16px Arial, sans-serif; fill:#374151}
+      .s{font:400 14px Arial, sans-serif; fill:#4b5563}
+      .formula{font:400 18px "Times New Roman", serif; fill:#111827}
+      .box{fill:#f8fafc; stroke:#94a3b8; stroke-width:2; rx:18}
+      .orange{fill:#fff7ed; stroke:#ea580c}
+      .green{fill:#f0fdf4; stroke:#16a34a}
+      .path{fill:none; stroke:#333; stroke-width:3; marker-end:url(#arrow)}
+      .learned{fill:none; stroke:#2563eb; stroke-width:4; marker-end:url(#blueArrow)}
+      .axis{stroke:#6b7280; stroke-width:2}
+      .curveA{fill:none; stroke:#ea580c; stroke-width:4}
+      .curveB{fill:none; stroke:#2563eb; stroke-width:4}
+      .curveC{fill:none; stroke:#16a34a; stroke-width:4}
+      .dot{fill:#111827}
+    </style>
+  </defs>
+  <rect x="0" y="0" width="1200" height="620" fill="#ffffff"/>
+  <text x="60" y="58" class="title">전체 관점: 이미지 한 장이 아니라, 분포가 이동한다</text>
+  <rect x="55" y="115" width="270" height="250" class="box orange"/>
+  <text x="85" y="155" class="h">1. 데이터 분포</text>
+  <text x="85" y="185" class="formula">x₀ ~ q(x₀)</text>
+  <line x1="95" y1="315" x2="285" y2="315" class="axis"/>
+  <line x1="95" y1="315" x2="95" y2="225" class="axis"/>
+  <path d="M100 312 C130 310, 135 250, 168 245 C196 242, 207 304, 230 304 C255 304, 258 260, 283 252" class="curveA"/>
+  <circle cx="165" cy="249" r="5" class="dot"/>
+  <circle cx="282" cy="253" r="5" class="dot"/>
+  <text x="85" y="345" class="s">여러 이미지 군집이 만든 실제 분포</text>
+  <rect x="465" y="115" width="270" height="250" class="box"/>
+  <text x="495" y="155" class="h">2. 정방향 노이즈화</text>
+  <text x="495" y="185" class="formula">q(xₜ | xₜ₋₁)</text>
+  <line x1="505" y1="315" x2="695" y2="315" class="axis"/>
+  <line x1="505" y1="315" x2="505" y2="225" class="axis"/>
+  <path d="M510 306 C545 300, 550 270, 585 267 C620 263, 634 300, 663 296 C681 294, 690 276, 700 270" class="curveB"/>
+  <path d="M510 310 C545 304, 563 284, 600 282 C640 280, 667 295, 700 303" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="7 7"/>
+  <text x="495" y="345" class="s">봉우리가 퍼지고 서로 섞인다</text>
+  <rect x="875" y="115" width="270" height="250" class="box green"/>
+  <text x="905" y="155" class="h">3. 거의 순수 노이즈</text>
+  <text x="905" y="185" class="formula">x_T ~ N(0, I)</text>
+  <line x1="915" y1="315" x2="1105" y2="315" class="axis"/>
+  <line x1="915" y1="315" x2="915" y2="225" class="axis"/>
+  <path d="M920 313 C960 305, 975 255, 1010 240 C1045 255, 1060 305, 1100 313" class="curveC"/>
+  <text x="905" y="345" class="s">시작하기 쉬운 표준정규분포</text>
+  <path d="M330 235 C370 235, 405 235, 455 235" class="path"/>
+  <text x="348" y="215" class="t">고정된 규칙</text>
+  <text x="350" y="258" class="formula">xₜ = √αₜxₜ₋₁ + √βₜε</text>
+  <path d="M740 235 C780 235, 815 235, 865 235" class="path"/>
+  <text x="760" y="215" class="t">T회 반복</text>
+  <path d="M1000 395 C910 510, 310 510, 205 395" class="learned"/>
+  <text x="435" y="548" class="h" fill="#2563eb">학습한 역과정: pθ(xₜ₋₁ | xₜ)를 반복 샘플링</text>
+  <text x="390" y="580" class="formula">pθ(x₀) = ∫ p(x_T) Π pθ(xₜ₋₁ | xₜ) dx₁:T</text>
+</svg>
