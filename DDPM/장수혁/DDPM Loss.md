@@ -1,4 +1,4 @@
-### 학습 관점
+[### 학습 관점
 $$L := \mathbb E_{q} \left[ -\log p\left( \mathbf{x}_{T} \right) - \sum_{t \geq 1 } \log \frac{p_{\theta}(\mathbf{x}_{t-1}\mid\mathbf{x}_{t})}{q(\mathbf{x}_{t}\mid\mathbf{x_{t-1}})} \right] 
 = \mathbb E_{q} \left[ -\log \frac{p_{\theta}(\mathbf{x}_{0:T})}{q(\mathbf{x}_{1:T} \mid\mathbf{x}_{0})} \right]$$
 - 하나의 데이터로 봤을 때 : $\mathbb E_{q}$ -> $q$는 고정 -> $p_{\theta}$를 학습 
@@ -50,3 +50,4 @@ Loss 를 다음과 같이 분해할 수 있다.
 $$L := \mathbb E_{q} \left[ -\log p\left( \mathbf{x}_{T} \right) - \sum_{t \geq 1 } \log \frac{p_{\theta}(\mathbf{x}_{t-1}\mid\mathbf{x}_{t})}{q(\mathbf{x}_{t}\mid\mathbf{x_{t-1}})} \right] 
 = \mathbb E_{q} \left[ -\log \frac{p_{\theta}(\mathbf{x}_{0:T})}{q(\mathbf{x}_{1:T} \mid\mathbf{x}_{0})} \right]$$
 $$\mathbb E_q\left[ \underbrace{ D_{\mathrm{KL}}\!\left( q(\mathbf x_T\mid\mathbf x_0)\Vert p(\mathbf x_T) \right)}_{L_T} + \sum_{t>1} \underbrace{ D_{\mathrm{KL}}\!\left( q(\mathbf x_{t-1}\mid\mathbf x_t,\mathbf x_0) \Vert p_\theta(\mathbf x_{t-1}\mid\mathbf x_t) \right)}_{L_{t-1}} - \underbrace{ \log p_\theta(\mathbf x_0\mid\mathbf x_1) }_{L_0} \right]$$
+](https://github.com/SH4316/machine-learning-thesis-study/blob/main/DDPM/%EC%9E%A5%EC%88%98%ED%98%81/DDPM%20Loss.md)
