@@ -1,4 +1,4 @@
-[### 학습 관점
+### 학습 관점
 $$L := \mathbb E_{q} \left[ -\log p\left( \mathbf{x}_{T} \right) - \sum_{t \geq 1 } \log \frac{p_{\theta}(\mathbf{x}_{t-1}\mid\mathbf{x}_{t})}{q(\mathbf{x}_{t}\mid\mathbf{x_{t-1}})} \right] 
 = \mathbb E_{q} \left[ -\log \frac{p_{\theta}(\mathbf{x}_{0:T})}{q(\mathbf{x}_{1:T} \mid\mathbf{x}_{0})} \right]$$
 - 하나의 데이터로 봤을 때 : $\mathbb E_{q}$ -> $q$는 고정 -> $p_{\theta}$를 학습 
@@ -15,6 +15,7 @@ $$L := \mathbb E_{q} \left[ -\log p\left( \mathbf{x}_{T} \right) - \sum_{t \geq 
 #### $p_{\theta}(x_{0})$의 의미
 $$L \geq E [-\log p_{\theta}(\mathbf{x}_{0})]$$
 $$p_\theta(x_0) = \int p_\theta(x_{0:T})\,dx_{1:T} = \int p(x_T)\prod_{t=1}^{T} p_\theta(x_{t-1}\mid x_t)\,dx_{1:T}$$
+
 Marginal Likelihood (Margianl Distribution) 으로 적분으로 정의됨
 
 #### 변경하는 이유
@@ -43,11 +44,11 @@ $$-\log p_\theta(\mathbf x_0) \leq \mathbb E_{q(\mathbf x_{1:T}\mid\mathbf x_0)}
 
 1. $-\log$ 이용해서 최적화 방향 변경
 2. Jenson 부등식으로 최적화 대상 변경
-	- 위로 볼록함수
 
 ### 변환
 Loss 를 다음과 같이 분해할 수 있다.
+
 $$L := \mathbb E_{q} \left[ -\log p\left( \mathbf{x}_{T} \right) - \sum_{t \geq 1 } \log \frac{p_{\theta}(\mathbf{x}_{t-1}\mid\mathbf{x}_{t})}{q(\mathbf{x}_{t}\mid\mathbf{x_{t-1}})} \right] 
 = \mathbb E_{q} \left[ -\log \frac{p_{\theta}(\mathbf{x}_{0:T})}{q(\mathbf{x}_{1:T} \mid\mathbf{x}_{0})} \right]$$
 $$\mathbb E_q\left[ \underbrace{ D_{\mathrm{KL}}\!\left( q(\mathbf x_T\mid\mathbf x_0)\Vert p(\mathbf x_T) \right)}_{L_T} + \sum_{t>1} \underbrace{ D_{\mathrm{KL}}\!\left( q(\mathbf x_{t-1}\mid\mathbf x_t,\mathbf x_0) \Vert p_\theta(\mathbf x_{t-1}\mid\mathbf x_t) \right)}_{L_{t-1}} - \underbrace{ \log p_\theta(\mathbf x_0\mid\mathbf x_1) }_{L_0} \right]$$
-](https://github.com/SH4316/machine-learning-thesis-study/blob/main/DDPM/%EC%9E%A5%EC%88%98%ED%98%81/DDPM%20Loss.md)
+
