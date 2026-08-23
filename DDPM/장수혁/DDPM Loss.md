@@ -20,14 +20,19 @@ Marginal Likelihood (Margianl Distribution) 으로 적분으로 정의됨
 #### 변경하는 이유
 
 논문에서의 식
+
 $$E [-\log p_{\theta}(\mathbf{x}_{0})] \leq \mathbb E_{q} \left[ -\log \frac{p_{\theta}(\mathbf{x}_{0:T})}{q(\mathbf{x}_{1:T} \mid\mathbf{x}_{0})} \right]$$
+
 실제 의미
+
 $$\mathbb E_{\mathbf x_0\sim q_{\text{data}}} \left[-\log p_\theta(\mathbf x_0)\right] \le \mathbb E_{\substack{ \mathbf x_0\sim q_{\text{data}}\\ \mathbf x_{1:T}\sim q(\mathbf x_{1:T}\mid\mathbf x_0) }} \left[ -\log \frac{ p_\theta(\mathbf x_{0:T}) }{ q(\mathbf x_{1:T}\mid\mathbf x_0) } \right]$$
+
 - 좌측 항은 실제 데이터에서 샘플링 (샘플링 안됨, 적분임)
 - 우측항은 실제로 데이터를 얻을 수 있는 noise process 에서 분포를 추출함.
 
 #### Loss 풀이
 $$\begin{aligned} p_\theta(\mathbf x_0) &= \int p_\theta(\mathbf x_{0:T})\,d\mathbf x_{1:T} \\[4pt] &= \int q(\mathbf x_{1:T}\mid\mathbf x_0) \frac{p_\theta(\mathbf x_{0:T})} {q(\mathbf x_{1:T}\mid\mathbf x_0)} \,d\mathbf x_{1:T} \\[4pt] &= \mathbb E_{\mathbf x_{1:T}\sim q(\mathbf x_{1:T}\mid\mathbf x_0)} \left[ \frac{p_\theta(\mathbf x_{0:T})} {q(\mathbf x_{1:T}\mid\mathbf x_0)} \right]. \end{aligned}$$
+
 1. Marginal Probability -> 적분식으로 변경
 2. Importance Sampling -> 샘플링 분포 변경
 
@@ -35,6 +40,7 @@ $$\mathbb E_{\mathbf x_{1:T}\sim q(\mathbf x_{1:T}\mid\mathbf x_0)} \left[ \frac
 $$-\log p_\theta(\mathbf x_0) = -\log \mathbb E_q \left[ \frac{p_\theta(\mathbf x_{0:T})} {q(\mathbf x_{1:T}\mid\mathbf x_0)} \right]$$
 $$-\log \mathbb E_q \left[ \frac{p_\theta(\mathbf x_{0:T})} {q(\mathbf x_{1:T}\mid\mathbf x_0)} \right] \leq \mathbb E_{q(\mathbf x_{1:T}\mid\mathbf x_0)} \left[ -\log \frac{p_\theta(\mathbf x_{0:T})} {q(\mathbf x_{1:T}\mid\mathbf x_0)} \right]$$
 $$-\log p_\theta(\mathbf x_0) \leq \mathbb E_{q(\mathbf x_{1:T}\mid\mathbf x_0)} \left[ -\log \frac{p_\theta(\mathbf x_{0:T})} {q(\mathbf x_{1:T}\mid\mathbf x_0)} \right]$$
+
 1. $-\log$ 이용해서 최적화 방향 변경
 2. Jenson 부등식으로 최적화 대상 변경
 	- 위로 볼록함수
