@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=schemas\page.schema.json
+Object type:
+    - Page
+Backlinks:
+    - Denoising Diffusion Probabilistic Model
+Creation date: "2026-09-06T07:46:41Z"
+Created by:
+    - jithdms
+id: bafyreigas3xkzqs2dgjdc5a22yhiana3pez73yrzlwj7ddsbe6cd3smdru
+---
+# 수식 설명   
+## 수식1 - 역방향 과정   
+### 수식   
+$p\_\theta(x\_{0:T}) := p(x\_T) \prod\_{t=1}^T p\_\theta(x\_{t-1}\vert x\_t)$
+$p\_\theta(x\_{t-1}\vert x\_t) := \mathcal{N}(x\_{t-1}; \mu\_\theta(x\_t, t), \Sigma\_\theta(x\_t, t))$   
+### 기호 설명   
+- $x\_{0:T}$ : $x\_0$(원본 이미지) ~ $x\_T$(완전 노이즈)까지 전체 시퀀스   
+- $p\_\theta$ : 아래첨자 $\theta$ = 신경망 파라미터 → **학습되는 확률**   
+- $p(x\_T)$ : 시작점 분포, $\mathcal{N}(0,I)$로 고정 (학습 없음)   
+- $\prod\_{t=1}^T$ : T단계를 순서대로 곱함 (경로 전체 확률)   
+- $p\_\theta(x\_{t-1}\vert x\_t)$ : $x\_t$를 보고 한 단계 이전 $x\_{t-1}$을 예측하는 확률   
+- $\mathcal{N}(x\_{t-1}; \mu\_\theta, \Sigma\_\theta)$ : 가우시안 분포   
+    - $\mu\_\theta(x\_t, t)$ : 평균, 신경망이 $x\_t$와 $t$를 입력받아 계산   
+    - $\Sigma\_\theta(x\_t, t)$ : 분산, 마찬가지로 신경망이 계산   
+   
+### 핵심 의미   
+- 완전한 노이즈 $x\_T$ → 신경망이 한 단계씩 노이즈 제거 → 원본 $x\_0$ 복원   
+- = 실제 이미지 **생성(샘플링) 과정** 그 자체   
+- 가우시안으로 두는 이유: $\beta\_t$가 작으면 역방향도 정방향처럼 가우시안 형태를 띤다는 이론적 근거   
+ --- 
+   
+## 수식2 - 순방향 과정   
+### 수식   
+$q(x\_{1:T}\vert x\_0) := \prod\_{t=1}^T q(x\_t\vert x\_{t-1})$
+$q(x\_t\vert x\_{t-1}) := \mathcal{N}(x\_t; \sqrt{1-\beta\_t},x\_{t-1}, \beta\_t I)$   
+### 기호 설명   
+- $x\_0$ : 원본 이미지   
+- $x\_1, \dots, x\_T$ : 노이즈가 점점 낀 이미지들 ($T=1000$)   
+- $q(\cdot)$ : $\theta$ 없음 → **고정된, 학습 안 되는 확률**   
+- $:=$ : "정의한다"   
+- $\prod\_{t=1}^T$ : 각 단계 확률을 전부 곱함   
+- $q(x\_t\vert x\_{t-1})$ : 이전 단계가 주어졌을 때 다음 단계가 나올 확률 (한 단계)   
+- $\mathcal{N}(x\_t; \sqrt{1-\beta\_t}x\_{t-1}, \beta\_t I)$   
+    - 평균 $\sqrt{1-\beta\_t},x\_{t-1}$ : 신호를 살짝 줄임 (분산 폭발 방지)   
+    - 분산 $\beta\_t I$ : $\beta\_t$=노이즈 강도(0~1 사이 작은 값), $I$=각 픽셀 독립   
+   
+### 핵심 의미   
+- 원본 이미지에 조금씩 가우시안 노이즈를 추가 → 최종적으로 순수 노이즈   
+- **사람이 정한 고정 레시피**, 학습 파라미터 없음   
+- $\beta\_t$ 스케줄: $\beta\_1=10^{-4} \to \beta\_T=0.02$ (선형 증가)   
+- "신호를 깎아내는 만큼 노이즈로 정확히 채운다" → 분산 항상 일정 유지   
+ --- 
+   
+## 수식3 - 변분 하한 (손실함수)   
+### 수식   
+$\mathbb{E}[-\log p\_\theta(x\_0)] \leq \mathbb{E}q\left[-\log \dfrac{p\theta(x\_{0:T})}{q(x\_{1:T}\vert x\_0)}\right] = \mathbb{E}q\left[-\log p(x\_T) - \sum{t\geq1}\log\dfrac{p\_\theta(x\_{t-1}\vert x\_t)}{q(x\_t\vert x\_{t-1})}\right] =: L$   
+### 기호 설명   
+- $\mathbb{E}[\cdot]$ : 기댓값 (평균)   
+- $-\log p\_\theta(x\_0)$ : negative log-likelihood, 모델이 실제 이미지를 얼마나 잘 설명하는지   
+- $\leq$ : 오른쪽이 왼쪽의 **상한선**   
+- $\mathbb{E}\_q[\cdot]$ : $q$ 분포를 기준으로 기댓값   
+- $p\_\theta(x\_{0:T})/q(x\_{1:T}\vert x\_0)$ : 분자=역방향(예측), 분모=순방향(정답 역할)   
+- $=: L$ : 이 전체를 $L$로 정의   
+- $-\log p(x\_T)$ : 시작 노이즈가 표준정규분포와 얼마나 맞는지   
+- $\sum\_{t\geq1}$ : 모든 단계에 대해 더함   
+- $\log \dfrac{p\_\theta(x\_{t-1}\vert x\_t)}{q(x\_t\vert x\_{t-1})}$ : 각 단계에서 예측/정답 비율의 로그   
+   
+### 4단계 논리 흐름   
+- 1단계 — 문제 상황   
+    - $\mathbb{E}[-\log p\_\theta(x\_0)]$ 를 직접 계산하려면 모든 중간 노이즈 단계에 대해 적분 필요 → 계산 불가능   
+- 2단계 — 트릭 도입   
+    - 계산 가능한 상한선 $L$을 대신 최소화 (VAE의 ELBO와 동일 논리)   
+    - $L$을 낮추면 원래 목표도 자동으로 낮아짐 (부등식 구조)   
+- 3단계 — 항 풀어쓰기   
+    - 각 단계의 (예측 확률 / 정답 확률) 비율의 로그값들의 합   
+- 4단계 — 결론 (수식 없이)   
+    - "매 단계마다, 신경망이 예측한 역방향이 실제 순방향과 최대한 비슷해지도록 학습한다"   
+   
+   
